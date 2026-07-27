@@ -5,7 +5,7 @@ Sitio web interactivo para aprender los fundamentos de HTML y CSS desde cero, co
 
 ##  Créditos
 
-Este proyecto es desarrollado en el [Centro Multimedia](https://www.centromultimedia.cenart.gob.mx) , perteneciente al **Centro Nacional de las Artes [Centro Nacional de las Artes (CENART)](https://www.cenart.gob.mx), como parte del Laboratorio de Publicaciones digitales y Diseño.
+Este proyecto es desarrollado en el [Centro Multimedia](https://www.centromultimedia.cenart.gob.mx) , perteneciente al  [Centro Nacional de las Artes (CENART)](https://www.cenart.gob.mx), como parte del Laboratorio de Publicaciones digitales y Diseño.
 - Idea de Zulim Miguel
 - Diseño de K. Ixchell Romero 
 ## Descripción
