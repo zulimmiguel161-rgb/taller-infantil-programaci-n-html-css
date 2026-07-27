@@ -6,9 +6,9 @@ Sitio web interactivo para aprender los fundamentos de HTML y CSS desde cero, co
 ##  Créditos
 
 Este proyecto es desarrollado en el **Centro Multimedia**, perteneciente al **Centro Nacional de las Artes (CENART)**, como parte del Laboratorio de Publicaciones digitales y Diseño.
-![CENART](https://cmm.cenart.gob.mx/).
-Idea de Zulim Miguel
-Diseño de K. Ixchell Romero 
+- [Centro Multimedia](https://www.centromultimedia.cenart.gob.mx) del [Centro Nacional de las Artes (CENART)](https://www.cenart.gob.mx)
+- Idea de Zulim Miguel
+- Diseño de K. Ixchell Romero 
 ## Descripción
 
 Este proyecto es un curso introductorio de desarrollo web enfocado en HTML5 y CSS3, dirigido a niñas y niños a partir de 9 años en el cual, a través de módulos progresivos, el usuario aprende lo mas próximo al HTML que son las etiquetas y agregar color, tamaño y posición del texto con CSS.
