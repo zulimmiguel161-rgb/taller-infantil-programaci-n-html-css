@@ -1,0 +1,1143 @@
+/* ============================================================
+   1. VARIABLES GLOBALES
+   ============================================================ */
+:root{
+    /* Fondo */
+    --background:linear-gradient(135deg, var(--accent), var(--secondary), var(--color-gray));
+    --surface:#FFFFFF;
+
+    /* Texto */
+    --text:#080e24;
+    --text-light:#718096;
+
+    /* Colores de marca */
+    --primary:#a9d2ff;
+    --secondary:#258fcb;
+    --accent:#0b1740;
+    --fun:#ff1c3d;
+
+    --color-gray:#b4c3e4;
+    --color-fucsia: #f94cc6;
+    --color-pink:#ffd3ef;
+
+    /* Fondos suaves */
+    --background-yellow-low:#f7e2ad;
+    --shadow-yellow: rgba(201, 165, 73, 0.22);
+    --background-purple-low:#dad3f5;
+
+    /* Estados */
+    --success:#2ECC71;
+    --error:#FF4D6D;
+
+    /* Extras */
+    --border:#E6E8F2;
+    --shadow:0 18px 45px rgba(108,99,255,.18);
+    --border-radius:.7rem;
+}
+
+/* ============================================================
+   2. RESET Y BASE
+   ============================================================ */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'JetBrains Mono', monospace;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    overflow:hidden;
+    background-color:var(--text);
+    background-image:
+        linear-gradient(rgba(169,210,255,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(169,210,255,0.06) 1px, transparent 1px);
+    background-size:24px 24px;
+
+}
+
+/* ============================================================
+   3. UTILIDADES: MOSTRAR / OCULTAR
+   ============================================================ */
+.hidden{
+    opacity:0;
+    transform:translateY(15px);
+    pointer-events:none;
+}
+
+.show{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+    transition:.4s;
+}
+
+.fade-out{
+    opacity:0;
+    transform:translateY(-20px) scale(.95);
+    transition:.6s;
+    pointer-events:none;
+}
+
+/* ============================================================
+   4. PANTALLA DE BIENVENIDA (welcome-card) — estilo pixel/terminal
+   ============================================================ */
+
+.welcome-card{
+    width:420px;
+    max-width:90%;
+    max-height:min-content;
+    background-image:
+        linear-gradient(rgba(169,210,255,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(1, 2, 33, 0.06) 1px, transparent 1px);
+    background-size:24px 24px;
+    border-radius:4px;
+    padding:35px;
+    text-align:center;
+    box-shadow:
+        0 0 0 4px var(--primary),
+        6px 6px 0 var(--secondary);
+    font-family:'JetBrains Mono', monospace;
+    color:var(--primary);
+    animation: buildIn 1s steps(8) forwards;
+}
+
+@keyframes buildIn{
+    from{ clip-path: inset(0 100% 100% 0); }
+    to{ clip-path: inset(0 0 0 0); }
+}
+.welcome-mascot-wrap{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.welcome-mascot{
+    width: 6rem;
+    height: 6rem;
+    background-color: var(--fun);
+    padding: 2rem;
+    border: var(--text) solid 1px;
+    box-shadow: var(--shadow);
+    margin: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+    image-rendering:pixelated;
+        box-shadow:0 4px 0 var(--secondary); 
+
+    clip-path:polygon(
+        0 8px, 8px 8px, 8px 0,
+        calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px,
+        100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px), calc(100% - 8px) 100%,
+        8px 100%, 8px calc(100% - 8px), 0 calc(100% - 8px)
+    );
+    animation:robotFloat 3s ease-in;
+}
+
+.mascot-speech{
+    position:relative;
+    width:100%;
+    margin-bottom:28px;
+    padding:16px 18px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:0;
+    font-size:14px;
+    font-weight:bold;
+    letter-spacing:.5px;
+    color:var(--text);
+    background:var(--primary);
+        box-shadow:0 4px 0 var(--secondary); 
+
+    clip-path:polygon(
+        0 8px, 8px 8px, 8px 0,
+        calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px,
+        100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px), calc(100% - 8px) 100%,
+        8px 100%, 8px calc(100% - 8px), 0 calc(100% - 8px)
+    );
+}
+
+.mascot-speech::before{
+    content:"";
+    position:absolute;
+    top:-9px;
+    left:50%;
+    transform:translateX(-50%);
+    width:14px;
+    height:9px;
+    background:var(--primary);
+    box-shadow:0 -3px 0 var(--secondary);
+    clip-path:polygon(0 100%, 50% 0, 100% 100%);
+}
+
+.name-row{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    text-align:left;
+}
+
+.name-label{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--fun);
+}
+
+.name-input{
+    width:100%;
+    padding:14px 16px;
+    background:var(--text);
+    border:none;
+    border-radius:0;
+    box-shadow:0 0 0 3px var(--color-gray);
+    font-family:'JetBrains Mono', monospace;
+    font-size:14px;
+    color:var(--primary);
+    outline:none;
+    transition:box-shadow .2s steps(4);
+}
+
+.name-input::placeholder{
+    color:var(--text-light);
+}
+
+.name-input:focus{
+    box-shadow:0 0 0 3px var(--fun);
+}
+
+.welcome-btn{
+    padding:16px 32px;
+    margin: 1rem;
+    border:none;
+    border-radius:0; 
+    background:var(--accent);
+    color:var(--surface);
+    font-family:'JetBrains Mono', monospace;
+    font-weight:bold;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    cursor:pointer;
+    box-shadow:0 4px 0 var(--secondary); 
+
+    clip-path:polygon(
+        0 8px, 8px 8px, 8px 0,
+        calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px,
+        100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px), calc(100% - 8px) 100%,
+        8px 100%, 8px calc(100% - 8px), 0 calc(100% - 8px)
+    );
+}
+
+.btn-pixel:active{
+    transform:translateY(4px);
+    box-shadow:0 0 0 var(--secondary);
+}
+
+
+
+
+.hidden{
+    display:none;
+}
+/* ============================================================
+   5. PANTALLA DE CARGA (loading-screen) — estilo pixel/robot
+   ============================================================ */
+.loading-screen{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    background:transparent; /* el fondo lo forma la grilla de pixeles, para poder disolverla */
+    transition:.5s;
+    image-rendering:pixelated;
+}
+
+/* ------------------------------------------------------------
+   Grilla de pixeles: cubre el editor de fondo y se va "apagando"
+   celda por celda a medida que avanza la barra de carga, revelando
+   el editor ya armado detrás.
+   ------------------------------------------------------------ */
+.pixel-reveal{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    display:grid;
+    grid-template-columns:repeat(24, 1fr);
+    grid-template-rows:repeat(14, 1fr);
+}
+
+.pixel-reveal span{
+    background-color:var(--text);
+    background-image:
+        linear-gradient(rgba(169,210,255,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(169,210,255,0.06) 1px, transparent 1px);
+    background-size:24px 24px;
+    opacity:1;
+}
+
+.pixel-reveal span.out{
+    animation:pixelOut .18s steps(1) forwards;
+}
+
+@keyframes pixelOut{
+    to{ opacity:0; }
+}
+
+/* Efecto de scanlines tipo CRT, por encima de la grilla */
+.loading-screen::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:repeating-linear-gradient(
+        0deg,
+        rgba(169,210,255,0.03),
+        rgba(169,210,255,0.03) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    pointer-events:none;
+    z-index:2;
+}
+
+.loading-content{
+    position:relative;
+    z-index:3;
+    text-align:center;
+    color:var(--primary);
+    font-family:'Press Start 2P', 'JetBrains Mono', monospace;
+}
+
+
+.loading-title{
+    margin-top:28px;
+    font-size:1rem;
+    letter-spacing:2px;
+    text-shadow:2px 2px 0 var(--accent);
+}
+
+.loading-bar{
+    width:340px;
+    max-width:90vw;
+    height:20px;
+    margin:30px auto;
+    padding:3px;
+    background:var(--text);
+    box-shadow:0 0 0 3px var(--primary);
+    border-radius:0; /* sin bordes redondeados, look de pixel */
+}
+
+.loading-progress{
+    width:0%;
+    height:100%;
+    background:repeating-linear-gradient(
+        90deg,
+        var(--primary),
+        var(--primary) 8px,
+        var(--secondary) 8px,
+        var(--secondary) 12px
+    );
+    transition:width .2s steps(10);
+}
+
+.loading-message{
+    min-height:24px;
+    font-size:.7rem;
+    color:var(--fun);
+    letter-spacing:1px;
+}
+.loading-message::after{
+    content:"_";
+    animation:blink 0.9s steps(1) infinite;
+}
+
+/* ============================================================
+   6. PANTALLA DEL EDITOR (editor-screen) — estilo pixel/terminal
+   ============================================================ */
+.editor-screen{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:center;
+    gap:1rem;
+    padding:2rem;
+    box-sizing:border-box;
+    background-image:
+        linear-gradient(rgba(169,210,255,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(169,210,255,0.06) 1px, transparent 1px);
+    background-size:24px 24px;
+}
+
+/* Mientras la pantalla de carga se disuelve encima, el editor ya está
+   armado y visible mas no es interactivo todavía. */
+.editor-screen.revealing{
+    pointer-events:none;
+}
+
+.editor-title{
+    font-size:36px;
+    color:var(--primary);
+    font-family:'JetBrains Mono', monospace;
+}
+
+.mission-header{
+    width:100%;
+    padding:2rem;
+    box-sizing:border-box;
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+    gap:2rem;
+    border-radius:0;
+    box-shadow:0 0 0 3px var(--secondary);
+    background-color:var(--text);
+    color:var(--primary);
+    font-weight:bold;
+    font-size:1.5rem;
+    font-family:'JetBrains Mono', monospace;
+}
+
+.mission-header-xp{
+    font-size:3rem;
+    color:var(--background-yellow-low);
+}
+
+.container-editor-preview{
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    align-items:flex-start;
+    gap:1rem;
+    box-sizing:border-box;
+}
+
+.box-editor-css{
+    display:none;
+}
+
+.box-editor-html,
+.box-preview-page{
+    width:calc(50% - .5rem);
+    height:100%;
+    box-sizing:border-box;
+}
+
+.container-editor-preview.mostrar-css .box-editor-html,
+.container-editor-preview.mostrar-css .box-editor-css{
+    width:49.5%;
+    height:50%;
+    box-sizing:border-box;
+}
+
+.container-editor-preview.mostrar-css .box-editor-css{
+    display:flex;
+    flex-direction:column;
+    padding:2rem;
+    border-radius:0;
+    background-color: var(--text);
+    box-shadow:0 0 0 3px var(--primary);
+    box-sizing: border-box;
+    position: relative;
+    overflow:hidden;
+}
+.container-editor-preview.mostrar-css .box-editor-css .box-intern-css{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    height:100%;
+    flex:1 1 auto;
+    min-height:0;
+}
+.container-editor-preview.mostrar-css .editor-css{
+    display:flex;
+    flex-direction:row;
+    box-sizing: border-box;
+    height:100%;
+    flex:1 1 auto;
+    min-height:0;
+    color: var(--secondary);
+    font-size: 1.5rem;
+    font-family: "Courier New", monospace;
+}
+textarea{
+    all: unset;
+}
+.container-editor-preview.mostrar-css .editor-css textarea{
+    background-color: var(--text);
+    color:var(--primary);
+    border: none;
+    outline: none;
+    resize: none;
+    width: 100%;
+    flex: 1 1 50%;
+    min-height: 0;
+    margin: 0;
+    padding: 25px;
+    box-sizing: border-box;
+    font-family: "Courier New", monospace;
+    font-size: 18px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow:auto;
+}
+
+.container-editor-preview.mostrar-css .box-preview-page{
+    width:100%;
+    height:50%;
+}
+.editor-screen.css-mode .box-help-symbols{
+    position: absolute;
+    bottom: 2rem;
+    right: 3rem;
+    background-color: transparent;
+    border: none;
+}
+.box-editor-html{
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:flex-start;
+    padding:2rem;
+    border-radius:0;
+    background:var(--text);
+    color:var(--primary);
+    font-size:1.8rem;
+    box-shadow:0 0 0 3px var(--secondary);
+}
+
+.box-preview-page{
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:flex-start;
+    padding:2rem;
+    border:1px solid var(--color-gray);
+    border-radius:0;
+    background:var(--surface);
+    color:var(--text);
+    font-size:1.8rem;
+    box-shadow:0 0 0 3px var(--primary);
+}
+
+.box-preview-page h1{
+    font-size:2rem;
+    font-weight:800;
+}
+
+.box-preview-page h2{
+    font-size:1.5rem;
+    font-weight:600;
+}
+
+.box-preview-page p{
+    font-size:1rem;
+    font-weight:400;
+}
+
+.ventana-preview-design{
+    width:100%;
+    height:100%;
+    border:1px solid var(--text);
+}
+
+.pestañas-preview-ventana{
+    width:100%;
+    display:flex;
+    flex-direction:row;
+    border-bottom:1px solid var(--color-gray);
+}
+
+.pestañas-preview-ventana span{
+    width:13rem;
+    height:2rem;
+    padding:.6rem;
+    box-sizing:border-box;
+    display:flex;
+    justify-content:flex-end;
+    align-content:center;
+    border-right:1px solid var(--color-gray);
+    border-top-right-radius:0;
+    font-size:1rem;
+    color:var(--text);
+}
+
+.barra-url-preview{
+    width:100%;
+    display:flex;
+    flex-direction:row;
+    gap:.5rem;
+    padding:1rem;
+    background-color:var(--background-purple-low);
+}
+
+.barra-url{
+    width:90%;
+    height:2rem;
+    padding:.5rem;
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    border-radius:0;
+    background-color:var(--text);
+    font-size:1rem;
+    color:var(--primary);
+}
+
+.perfil-icon-preview{
+    width:2rem;
+    height:2rem;
+    border-radius:50%;
+    background-color:var(--secondary);
+}
+
+.puntos-preview{
+    color:var(--text);
+}
+
+.preview-content{
+    width:100%;
+    height:100%;
+    padding:2rem;
+    box-sizing:border-box;
+}
+
+/* ============================================================
+   7. EDITOR DE CÓDIGO (textarea + resaltado de sintaxis)
+   ============================================================ */
+.code-titulo-html{
+    font-family:"Courier New", monospace;
+    color:var(--secondary);
+}
+
+.code-editor-wrap{
+    position:relative;
+    width:100%;
+    height:100%;
+}
+
+.code-editor-wrap .code-highlight,
+.code-editor-wrap .code-editor{
+    position:absolute;
+    inset:0;
+    margin:0;
+    padding:25px;
+    box-sizing:border-box;
+    font-family:"Courier New", monospace;
+    font-size:18px;
+    line-height:1.5;
+    white-space:pre-wrap;
+    word-wrap:break-word;
+    overflow:auto;
+}
+
+.code-highlight{
+    z-index:1;
+    color:var(--primary);
+    pointer-events:none;
+    font-family:"Courier New", monospace;
+}
+
+.code-editor{
+    z-index:2;
+    background:transparent;
+    color:transparent;
+    caret-color:var(--primary);
+    border:none;
+    outline:none;
+    resize:none;
+}
+
+.tag-symbol{
+    color:var(--secondary);
+}
+
+.tag-unclosed{
+    padding:0 .1em;
+    border-radius:.2rem;
+    background-color:var(--accent);
+    color:var(--surface);
+}
+
+#ya-termine-btn{
+    align-self:flex-end;
+    margin-top:12px;
+    padding:12px 24px;
+    border:none;
+    border-radius:0;
+    background:var(--success);
+    box-shadow:0 4px 0 var(--secondary);
+    color:var(--surface);
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.1s;
+    font-family:'JetBrains Mono', monospace;
+    text-transform:uppercase;
+}
+
+#ya-termine-btn:hover{
+    filter:brightness(1.05);
+}
+
+#ya-termine-btn:active{
+    transform:translateY(4px);
+    box-shadow:0 0 0 var(--secondary);
+}
+
+#ya-termine-btn.hidden{
+    display:none;
+}
+
+/* ============================================================
+   8. TABLA DE AYUDA DE CSS (fija dentro del panel de CSS, modo libre)
+   ============================================================ */
+.css-help-table{
+    width:100%;
+    flex:1 1 50%;
+    min-height:0;
+    margin:0;
+    padding:.75rem 25px;
+    box-sizing:border-box;
+    display:flex;
+    flex-direction:column;
+    gap:.5rem;
+    overflow-y:auto;
+    background-color:var(--text);
+    border-top:1px solid var(--color-gray);
+}
+
+.css-help-title{
+    margin-bottom:.2rem;
+    font-size:.9rem;
+    font-weight:bold;
+    color:var(--primary);
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.css-help-menu{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:.5rem;
+    flex:0 0 auto;
+}
+
+.css-help-menu label{
+    font-size:.8rem;
+    color:var(--surface);
+    font-family:Arial, Helvetica, sans-serif;
+    white-space:nowrap;
+}
+
+.css-help-select{
+    flex:0 0 auto;
+    min-width:0;
+    width:9rem;
+    max-width:45%;
+    padding:.35rem .5rem;
+    border:1px solid var(--color-gray);
+    border-radius:0;
+    background-color:var(--text);
+    color:var(--secondary);
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:.8rem;
+    cursor:pointer;
+}
+
+.css-help-select:hover{
+    background-color:var(--accent);
+}
+
+/* ============================================================
+   9. PANEL DE AYUDA (símbolos < > / " = ) — solo en misiones de HTML
+   ============================================================ */
+.box-help-symbols{
+    width:100%;
+    box-sizing:border-box;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:1rem;
+
+}
+
+.help-button{
+    width:4rem;
+    height:4rem;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 2rem;
+    aspect-ratio:1;
+    border:none;
+    border-radius:50%;
+    background-color:var(--accent);
+    color:var(--surface);
+    cursor:pointer;
+    box-shadow:0 4px 6px rgba(0, 0, 0, 0.1);
+    transition:
+        transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        box-shadow 0.4s ease,
+        filter 0.3s ease;
+
+}
+
+.panel-symbols{
+    width:16rem;
+    margin-right:.4rem;
+    padding:.5rem;
+    display:flex;
+    flex-direction:row;
+    gap:.3rem;
+}
+
+.symbol-btn{
+    width:3rem;
+    height:3rem;
+    border-radius:.5rem;
+    font-size:2rem;
+    color:var(--text);
+    font-family:'JetBrains Mono', monospace;
+    cursor:pointer;
+    box-shadow:4px 4px 1px rgb(160, 209, 230);
+    transition:
+        transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        box-shadow 0.4s ease,
+        filter 0.3s ease;
+}
+
+.help-button:hover,
+.symbol-btn:hover{
+    transform:scale(1.08) translateY(-5px) rotate(1deg);
+    filter:brightness(1.1);
+}
+
+#recordar-mision-btn{
+    width:4rem;
+    height:4rem;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 2rem;
+    font-weight: bolder;
+    border:none;
+    border-radius:50%;
+    background-color:var(--primary);
+    color:var(--surface);
+    cursor:pointer;
+    box-shadow:0 4px 6px rgba(0, 0, 0, 0.1);
+    transition:
+        transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        box-shadow 0.4s ease,
+        filter 0.3s ease;
+}
+
+#recordar-mision-btn:hover{
+    transform:scale(1.08) translateY(-5px) rotate(1deg);
+    filter:brightness(1.1);
+}
+
+.mission-warning{
+    margin-bottom:1rem;
+    padding:.8rem;
+    border-radius:.5rem;
+    background:var(--background-yellow-low);
+    color:var(--text);
+    font-weight:bold;
+}
+
+/* En modo libre ya no hay misión que recordar: el botón desaparece. */
+.editor-screen.css-mode #recordar-mision-btn{
+    display:none;
+}
+
+#descargar-btn{
+    padding:1rem 1.5rem;
+    border:none;
+    border-radius:2rem;
+    background-color:var(--success);
+    color:var(--surface);
+    font-weight:bold;
+    font-size:1rem;
+    cursor:pointer;
+    box-shadow:0 4px 6px rgba(0, 0, 0, 0.1);
+    transition:
+        transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        box-shadow 0.4s ease,
+        filter 0.3s ease;
+}
+
+#descargar-btn:hover{
+    transform:scale(1.05) translateY(-3px);
+    filter:brightness(1.1);
+}
+/* ============================================================
+   10. OVERLAYS DE MISIÓN Y LOGRO
+   ============================================================ */
+.overlay-container{
+    width:100vw;
+    height:100vh;
+    position:absolute;
+    inset:0;
+    z-index:9;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgb(18 35 94 / 50%);
+}
+
+.overlay-container.hidden{
+    display:none;
+}
+
+.overlay-mission{
+    width:40rem;
+    position:absolute;
+    z-index:10;
+    padding:2rem;
+    box-sizing:border-box;
+    display:flex;
+    flex-direction:column;
+    border-radius:0;
+    box-shadow:0 0 0 3px var(--primary);
+    background-color:var(--surface);
+    color:var(--text);
+}
+
+.overlay-logro{
+    width:40rem;
+    height:calc(100% - 15rem);
+    position:absolute;
+    z-index:10;
+    display:flex;
+    flex-direction:column;
+    border-radius:0;
+    box-shadow:0 0 0 3px var(--primary);
+    background-color:var(--surface);
+    color:var(--text);
+}
+
+.overlay-cerrar{
+    width:100%;
+    padding:1rem;
+    box-sizing:border-box;
+    display:flex;
+    justify-content:end;
+}
+
+.overlay-cerrar span{
+    width:2rem;
+    height:2rem;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:50%;
+    color:var(--text);
+    cursor:pointer;
+    transition:background-color .2s ease, transform .2s ease;
+    font-size: 1.5rem;
+}
+
+.overlay-cerrar span:hover{
+    background-color:var(--color-gray);
+    transform:scale(1.1);
+}
+
+.overlay-cerrar span:active{
+    background-color:var(--color-gray);
+    transform:scale(0.95);
+}
+
+.mission-instructions,
+.mission-texto{
+    padding:1rem;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:1rem;
+    font-size:1.5rem;
+}
+
+.mission-video{
+    display:block;
+    width:100%;
+    max-width:420px;
+    height:300px;
+    margin:1rem auto 1.5rem;
+    border-radius:1rem;
+    border:4px solid var(--background-yellow-low);
+    box-shadow:0 0 20px var(--shadow-yellow);
+}
+
+.mission-button-continue{
+    width:10rem;
+    margin-top:auto;
+    padding:1rem;
+    border:none;
+    border-radius:2rem;
+    background-color:var(--background-yellow-low);
+    color:var(--text);
+    cursor:pointer;
+    box-shadow:0 4px 6px rgba(0, 0, 0, 0.1);
+    transition:transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.mission-button-continue:hover{
+    background-color:var(--accent);
+    color:var(--surface);
+    box-shadow:0 8px 20px var(--shadow-yellow);
+}
+.instruccion-pregunta{
+    font-weight: bolder;
+}
+.instruccion-texto{
+    padding: .5rem;
+}
+/* ============================================================
+   12. PANTALLA FINAL (felicidades + confeti)
+   ============================================================ */
+.final-screen{
+    position:fixed;
+    inset:0;
+    z-index:200;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    background:var(--background);
+    background-size:200% 200%;
+    animation:gradientMove 6s ease infinite;
+}
+
+.final-content{
+    position:relative;
+    z-index:2;
+    max-width:90%;
+    padding:40px;
+    text-align:center;
+    color:var(--surface);
+}
+
+.final-trofeo{
+    font-size:100px;
+    animation:trofeoPop .6s ease;
+}
+
+.final-titulo{
+    margin-top:15px;
+    font-size:2.6rem;
+}
+
+.final-mensaje{
+    margin-top:10px;
+    font-size:1.4rem;
+    font-weight:bold;
+}
+
+.final-btn{
+    margin-top:30px;
+    padding:16px 34px;
+    border:none;
+    border-radius:20px;
+    background:var(--surface);
+    color:var(--primary);
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 15px 35px rgba(0,0,0,.25);
+    transition:.2s;
+}
+
+.final-btn:hover{
+    transform:translateY(-4px) scale(1.03);
+    filter:brightness(1.05);
+}
+
+.confetti{
+    position:absolute;
+    inset:0;
+    z-index:1;
+}
+
+.confeti-pieza{
+    position:absolute;
+    top:-40px;
+    width:14px;
+    height:14px;
+    border-radius:3px;
+    opacity:.9;
+    animation:confettiFall 3.5s linear infinite;
+}
+
+.c1{ left:5%;  background:var(--accent);    animation-delay:0s;   }
+.c2{ left:15%; background:var(--secondary); animation-delay:.3s;  }
+.c3{ left:25%; background:var(--fun);        animation-delay:.6s;  }
+.c4{ left:35%; background:var(--primary);    animation-delay:.2s;  }
+.c5{ left:45%; background:var(--accent);     animation-delay:.9s;  }
+.c6{ left:55%; background:var(--secondary);  animation-delay:.5s;  }
+.c7{ left:65%; background:var(--fun);        animation-delay:1.1s; }
+.c8{ left:75%; background:var(--primary);    animation-delay:.1s;  }
+.c9{ left:85%; background:var(--accent);     animation-delay:.7s;  }
+.c10{left:95%; background:var(--secondary);  animation-delay:1.3s; }
+
+@keyframes confettiFall{
+    0%{ transform:translateY(0) rotate(0deg); opacity:1; }
+    100%{ transform:translateY(110vh) rotate(360deg); opacity:.8; }
+}
+
+@keyframes trofeoPop{
+    0%{ transform:scale(0); }
+    60%{ transform:scale(1.2); }
+    100%{ transform:scale(1); }
+}
+
+@keyframes gradientMove{
+    0%, 100%{ background-position:0% 50%; }
+    50%{ background-position:100% 50%; }
+}
+
+/* ============================================================
+   11. ANIMACIONES
+   ============================================================ */
+@keyframes cardIn{
+    from{ opacity:0; transform:translateY(40px); }
+    to{ opacity:1; transform:translateY(0); }
+}
+
+@keyframes bob{
+    0%, 100%{ transform:translateY(0); }
+    50%{ transform:translateY(-8px); }
+}
+
+@keyframes planetFloat{
+    0%, 100%{ transform:translateY(0); }
+    50%{ transform:translateY(-10px); }
+}
+
+@keyframes twinkle{
+    0%, 100%{ transform:scale(.6); opacity:.3; }
+    50%{ transform:scale(1.3); opacity:1; }
+}
+
+@keyframes robotFloat{
+    0%, 100%{ transform:translateY(0); }
+    50%{ transform:translateY(-12px); }
+}
+
+@keyframes blink{
+    0%, 100%{ opacity:1; }
+    50%{ opacity:0; }
+}

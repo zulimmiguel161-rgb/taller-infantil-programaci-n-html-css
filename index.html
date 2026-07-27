@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+
+    <title>Mi Primera Página Web</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     PANTALLA BIENVENIDA
+===================================== -->
+
+<div class="welcome-card" id="welcome-card">
+
+    <div class="welcome-mascot-wrap">
+
+        <div class="welcome-mascot">
+            🤖
+        </div>
+
+
+        <div class="mascot-speech" id="speech">
+            ...
+        </div>
+
+    </div>
+
+
+
+    <div class="name-row hidden" id="name-row">
+
+        <label class="name-label">
+            ¿Cómo te llamas?
+        </label>
+
+
+        <input
+            class="name-input"
+            id="player-name"
+            type="text"
+            placeholder="Tu nombre"
+            maxlength="20">
+
+    </div>
+
+
+
+    <button
+        class="welcome-btn hidden"
+        id="start-btn"
+        onclick="comenzarJuego()">
+
+        ¡Comenzar! 🚀
+
+    </button>
+
+
+</div>
+
+
+<!-- =====================================
+     PANTALLA DE CARGA
+===================================== -->
+
+<div class="loading-screen hidden" id="loading-screen">
+
+    <!-- Grilla de pixeles: se va disolviendo mientras avanza la carga,
+         revelando el editor que ya está armado detrás. -->
+    <div class="pixel-reveal" id="pixel-reveal"></div>
+
+    <div class="stars">
+        <span class="star s1"></span>
+        <span class="star s2"></span>
+        <span class="star s3"></span>
+        <span class="star s4"></span>
+        <span class="star s5"></span>
+        <span class="star s6"></span>
+    </div>
+
+    <div class="loading-content">
+    <h1 class="loading-title">CREANDO TU LABORATORIO</h1>
+    <div class="loading-bar">
+        <div class="loading-progress" id="loading-progress"></div>
+    </div>
+    <div class="loading-message" id="loading-message">&gt; Preparando todo...</div>
+</div>
+</div>
+
+<!-- =====================================
+     EDITOR
+===================================== -->
+<section class="editor-screen hidden" id="editor-screen">
+    <div class="mission-header" id="mission-header">
+        <span class="mission-header-title"></span>
+        <span class="mission-header-xp" id="mission-header-xp">⭐</span>
+    </div>
+    <section class="container-editor-preview">
+        <div class="box-editor-html" id="box-editor-html">
+            <span class="code-titulo-html">HTML</span>
+            <div class="code-editor-wrap">
+                <pre class="code-highlight" id="code-highlight" aria-hidden="true"><code></code></pre>
+                <textarea
+                    class="code-editor"
+                    id="code-editor"
+                    placeholder="Escribe tu código aquí..."
+                    spellcheck="false"></textarea>
+            </div>
+            <button id="ya-termine-btn" class="hidden">Ya terminé ✓</button>
+        </div>
+
+        <!-- Panel de CSS: solo aparece en modo libre, una vez completadas
+             las 4 misiones de HTML. La tabla de ayuda vive fija dentro de
+             este panel, debajo del editor, siempre visible. -->
+        <section class="box-editor-css" id="box-editor-css">
+            <div class="box-intern-css">
+                <div class="editor-css">
+                    <span class="title-css">CSS</span>
+                    <textarea id="css-editor"
+                    placeholder="Escribe tu código CSS aquí..."
+                    spellcheck="false"></textarea>
+
+                    <div class="css-help-table" id="css-help-table">
+                        <p class="css-help-title">Ayuda rápida de CSS</p>
+
+                        <div class="css-help-menu">
+                            <label for="menu-color-texto">🎨 Color de texto</label>
+                            <select class="css-help-select" id="menu-color-texto" data-propiedad="color">
+                                <option value="">Elige un color…</option>
+                                <option value="red">Rojo</option>
+                                <option value="orange">Naranja</option>
+                                <option value="gold">Amarillo</option>
+                                <option value="green">Verde</option>
+                                <option value="dodgerblue">Azul</option>
+                                <option value="purple">Morado</option>
+                                <option value="deeppink">Rosa</option>
+                                <option value="black">Negro</option>
+                                <option value="white">Blanco</option>
+                            </select>
+                        </div>
+
+                        <div class="css-help-menu">
+                            <label for="menu-color-fondo">🖼️ Color de fondo</label>
+                            <select class="css-help-select" id="menu-color-fondo" data-propiedad="background-color">
+                                <option value="">Elige un color…</option>
+                                <option value="lightblue">Azul claro</option>
+                                <option value="lightgreen">Verde claro</option>
+                                <option value="lightyellow">Amarillo claro</option>
+                                <option value="lightpink">Rosa claro</option>
+                                <option value="lavender">Lila</option>
+                                <option value="peachpuff">Durazno</option>
+                                <option value="white">Blanco</option>
+                                <option value="black">Negro</option>
+                            </select>
+                        </div>
+
+                        <div class="css-help-menu">
+                            <label for="menu-texto">📝 Alinear texto</label>
+                            <select class="css-help-select" id="menu-texto" data-propiedad="text-align">
+                                <option value="">Elige una opción…</option>
+                                <option value="left">Izquierda</option>
+                                <option value="center">Centro</option>
+                                <option value="right">Derecha</option>
+                            </select>
+                        </div>
+
+                        <div class="css-help-menu">
+                            <label for="menu-tamano">🔠 Tamaño de letra</label>
+                            <select class="css-help-select" id="menu-tamano" data-propiedad="font-size">
+                                <option value="">Elige un tamaño…</option>
+                                <option value="16px">Pequeño</option>
+                                <option value="24px">Mediano</option>
+                                <option value="36px">Grande</option>
+                                <option value="50px">Muy grande</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="box-preview-page" id="box-preview-page">
+            <div class="ventana-preview-design">
+                <div class="pestañas-preview-ventana">
+                    <span> x</span>
+                    <span>x</span>
+                    <span>x</span>
+                </div>
+                <div class="barra-url-preview">
+                    <span class="icono-preview"> ← </span>
+                    <span class="icono-preview">→</span>
+                    <span class="icono-preview">↻</span>
+                    <span class="barra-url">★</span>
+                    <span class="puntos-preview">⋮</span>
+                </div>
+                <div class="preview-content" id="preview-page"></div>
+            </div>
+
+
+        </div>
+    </section>
+    <section class="box-help-symbols" id="box-help">
+        <div class="panel-symbols hidden" id="panel-symbols">
+            <button class="symbol-btn">&lt;</button>
+            <button class="symbol-btn">&gt;</button>
+            <button class="symbol-btn">/</button>
+            <button class="symbol-btn">"</button>
+            <button class="symbol-btn">=</button>
+        </div>
+        <button class="help-button" id="box-help-symbols">
+            <p>?</p>
+        </button>
+        <button id="recordar-mision-btn">
+            ?
+        </button>
+        <button id="descargar-btn" class="hidden">
+            💾 Descargar mi página
+        </button>
+    </section>
+</section>
+
+<!-- =====================================
+     OVERLAYS MISION
+===================================== -->
+<section class="overlay-container">
+
+    <div class="overlay-mission">
+        <div class="overlay-cerrar">
+            <span>✕</span>
+        </div>
+
+        <div class="mission-instructions" id="mission-instructions">
+            <button class="mission-button-continue">
+                Continuar
+            </button>
+        </div>
+    </div>
+    <div class="overlay-logro">
+        <div class="overlay-cerrar">
+            <span>✕</span>
+        </div>
+
+        <div class="mission-texto">
+            <button class="mission-button-continue">
+                Continuar
+            </button>
+        </div>
+    </div>
+
+</section>
+
+
+<!-- =====================================
+     PANTALLA FINAL (al descargar)
+===================================== -->
+<div class="final-screen hidden" id="final-screen">
+    <div class="confetti">
+        <span class="confeti-pieza c1"></span>
+        <span class="confeti-pieza c2"></span>
+        <span class="confeti-pieza c3"></span>
+        <span class="confeti-pieza c4"></span>
+        <span class="confeti-pieza c5"></span>
+        <span class="confeti-pieza c6"></span>
+        <span class="confeti-pieza c7"></span>
+        <span class="confeti-pieza c8"></span>
+        <span class="confeti-pieza c9"></span>
+        <span class="confeti-pieza c10"></span>
+    </div>
+
+    <div class="final-content">
+        <div class="final-trofeo">🏆</div>
+        <h1 class="final-titulo" id="final-titulo">¡Felicidades!</h1>
+        <p class="final-mensaje" id="final-mensaje">Has terminado el curso 🎉</p>
+        <button class="final-btn" id="final-btn">¡Genial! 😄</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
