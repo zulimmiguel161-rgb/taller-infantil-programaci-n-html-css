@@ -1,7 +1,7 @@
 // =====================
 // MODO DESARROLLO
 // =====================
-const DEV_MODE = true;
+const DEV_MODE = false;
 
 // =====================
 // ELEMENTOS DEL HTML
