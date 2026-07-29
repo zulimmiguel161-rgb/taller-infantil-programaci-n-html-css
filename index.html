@@ -9,7 +9,7 @@
 
     <title>Mi Primera Página Web</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
 
@@ -22,11 +22,14 @@
 ===================================== -->
 
 <div class="welcome-card" id="welcome-card">
-
+    <div class="points-window">
+            <span></span>
+            <span></span>
+            <span></span>
+    </div>
     <div class="welcome-mascot-wrap">
-
         <div class="welcome-mascot">
-            🤖
+            <img class="mascota-robot" src="css/img/robot.png" alt="robot mascota">
         </div>
 
 
@@ -41,7 +44,6 @@
     <div class="name-row hidden" id="name-row">
 
         <label class="name-label">
-            ¿Cómo te llamas?
         </label>
 
 
@@ -60,8 +62,7 @@
         class="welcome-btn hidden"
         id="start-btn"
         onclick="comenzarJuego()">
-
-        ¡Comenzar! 🚀
+        <img class="arrow-continue" src="css/img/flecha.svg" alt="flecha-continuar">
 
     </button>
 
@@ -103,7 +104,9 @@
 <section class="editor-screen hidden" id="editor-screen">
     <div class="mission-header" id="mission-header">
         <span class="mission-header-title"></span>
-        <span class="mission-header-xp" id="mission-header-xp">⭐</span>
+        <span class="mission-header-xp" id="mission-header-xp">
+            <img src="css/img/estrella.png" alt="estrella">
+        </span>
     </div>
     <section class="container-editor-preview">
         <div class="box-editor-html" id="box-editor-html">
@@ -192,16 +195,16 @@
         <div class="box-preview-page" id="box-preview-page">
             <div class="ventana-preview-design">
                 <div class="pestañas-preview-ventana">
-                    <span> x</span>
-                    <span>x</span>
-                    <span>x</span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
                 <div class="barra-url-preview">
-                    <span class="icono-preview"> ← </span>
-                    <span class="icono-preview">→</span>
-                    <span class="icono-preview">↻</span>
-                    <span class="barra-url">★</span>
-                    <span class="puntos-preview">⋮</span>
+                    <span class="icono-preview"> <img src="css/img/arrow-b.svg" alt=""> </span>
+                    <span class="icono-preview"><img src="css/img/arrow-f.svg" alt=""></span>
+                    <span class="icono-preview"><img src="css/img/refresh.svg" alt=""></span>
+                    <span class="barra-url"><img src="css/img/starrr.svg" alt=""></span>
+                    <span class="puntos-preview"><img src="css/img/more.svg" alt=""></span>
                 </div>
                 <div class="preview-content" id="preview-page"></div>
             </div>
@@ -210,6 +213,10 @@
         </div>
     </section>
     <section class="box-help-symbols" id="box-help">
+        
+        <button class="help-button" id="box-help-symbols">
+            <img src="css/img/flecha.svg" alt="">
+        </button>
         <div class="panel-symbols hidden" id="panel-symbols">
             <button class="symbol-btn">&lt;</button>
             <button class="symbol-btn">&gt;</button>
@@ -217,14 +224,12 @@
             <button class="symbol-btn">"</button>
             <button class="symbol-btn">=</button>
         </div>
-        <button class="help-button" id="box-help-symbols">
-            <p>?</p>
-        </button>
-        <button id="recordar-mision-btn">
-            ?
-        </button>
+
         <button id="descargar-btn" class="hidden">
             💾 Descargar mi página
+        </button>
+                <button id="recordar-mision-btn">
+            ?
         </button>
     </section>
 </section>
@@ -238,11 +243,25 @@
         <div class="overlay-cerrar">
             <span>✕</span>
         </div>
-
         <div class="mission-instructions" id="mission-instructions">
-            <button class="mission-button-continue">
+
+            <div class="robot-mission" id="robot-mission">
+                <div class="imagen-robot">
+                    <img class="img-robot" src="css/img/robot.png" alt="Robot">
+                </div>
+                <div class="text-mision" id="text-mision">
+                
+                </div>
+            </div>
+
+            <div class="video-mission " id="video-mission">
+            
+            </div>
+
+            <button class="mission-button-continue" id="mission-continue-btn">
                 Continuar
             </button>
+
         </div>
     </div>
     <div class="overlay-logro">
@@ -252,7 +271,6 @@
 
         <div class="mission-texto">
             <button class="mission-button-continue">
-                Continuar
             </button>
         </div>
     </div>
