@@ -6,6 +6,7 @@ const DEV_MODE = false;
 // =====================
 // ELEMENTOS DEL HTML
 // =====================
+const robotAvatar     = document.getElementById("robot-avatar");
 const speech          = document.getElementById("speech");
 const nameRow         = document.getElementById("name-row");
 const playerName      = document.getElementById("player-name");
@@ -45,6 +46,13 @@ const descargarBtn      = document.getElementById("descargar-btn");
 const finalScreen       = document.getElementById("final-screen");
 const finalMensaje      = document.getElementById("final-mensaje");
 const finalBtn          = document.getElementById("final-btn");
+
+// Tour del laboratorio (entre el loading y la primera misión)
+const startScreen       = document.getElementById("start-screen");
+const startScreenRobot  = document.getElementById("start-screen-robot");
+const startScreenSpeech = document.getElementById("start-screen-speech");
+const startScreenBtn    = document.getElementById("start-screen-btn");
+const arrowContinue     = document.getElementById("arrow-continue")
 // =====================
 // CONSTANTES
 // =====================
@@ -52,12 +60,23 @@ const finalBtn          = document.getElementById("final-btn");
 const VOID_TAGS = ["img", "br", "hr", "input", "meta", "link"];
 
 const dialogosIntroduccion = [
-    { texto: "¡Hola! Yo soy Codi" },
-    { texto: "Juntos vamos a crear tu primera página web" },
-    { texto: "¿Cuál es tu nombre?" },
+    { texto: "¡Hola! soy Codi" },
+    { texto: "Te voy a contar una historia…" },
+    { texto: "Desperté hace mucho tiempo en este laboratorio..." },
+    { texto: "Pero había un problema..." },
+    { texto: "¡Mi cuerpo estaba incompleto!" },
+    { texto: "Desde entonces intento recuperar mis piezas." },
+    { texto: "¡Creo que tú puedes ayudarme!  " },
+    { texto: "¡Necesito un compañero de programación!" },
+    { texto: "¿Cual es tu nombre?" },
     { input: "nombre" }
 ];
+let dialogoBienvenidaActual = 0;
 
+const dialogosBienvenida = [
+    { texto: "¡Qué emoción, {nombre}! Cada misión nos ayudará a recuperar una parte de mi cuerpo." },
+    { texto: "Poco a poco volveré a estar completo y descubrirás cómo se crean las páginas web." },
+];
 const dialogoLoading = [
     "[ ] Inicializando sistema",
     "[=] Calibrando sensores del robot",
@@ -72,11 +91,14 @@ const dialogoLoading = [
 // nuevo". El niño simplemente juega libremente con el panel de CSS.
 const misiones = [
     {
-        titulo: "Escribe tu primera etiqueta, ¡TU PRIMER HOLA MUNDO!",
+        titulo: "MISIÓN 1: Recuperemos mi cabeza",
 
         pasos: [
-            { texto: "¿Qué es? \n Cuando quieres poner el título más importante de tu página, usas <h1>. \n¡Es el más grande de todos y solo puede haber uno! \n Así se escribe:{{VIDEO}}" },
-            { texto: "¡Ahora te toca a ti! \n Escribe un <h1> con: \n Hola mundo, mi nombre es:  Por ejemplo, si te llamas Ana, sería:\n<h1>Hola mundo, mi nombre es Ana</h1>" }
+            { texto: "¡Empecemos por la parte más importante de mi cuerpo: la cabeza!" },
+            { texto: "¿Recuerdas que HTML es mi esqueleto? Pues mi cabeza necesita un   título, porque todos deben saber quién soy" },
+            { texto: "En las páginas web, los títulos más importantes se escriben con la etiqueta <h1>." },
+            { texto: "Es como un letrero gigante que dice de qué trata la página." },
+            { texto: "Tu misión:\n Escribe un título para ayudarme a recuperar mi cabeza.\n Por ejemplo: \n <h1>Hola, soy Codi</h1>\nEse sería un buen título." }
         ],
         video: "videos/mision1-h1.mp4",
         videoLogro: "https://i.pinimg.com/originals/aa/d3/0b/aad30b629170b9b9195542820179cc70.gif",
@@ -87,10 +109,12 @@ const misiones = [
         }
     },
     {
-        titulo: "Escribe tu nombre con H2",
+        titulo: "MISIÓN 2: Recuperemos mi pecho",
         pasos: [
-            { texto: "¿Qué es? \n Es un título más pequeño que el <h1>, se usa para separar temas dentro de la página. Puedes usar varios en la misma página.\n ¿Cómo se usa? {{VIDEO}}" },
-            { texto: "Ejercicio: \n Escribe un <h2> con el nombre de tu película favorita" }
+            { texto:"¡Ya tengo cabeza! Pero todavía necesito mi pecho."},
+            { texto:"Un título grande está muy bien, pero a veces necesitamos organizar la información."},
+            { texto:"Para eso existe <h2>, piensa que un <h1> es el título de un libro y un <h2> son los nombres de sus capítulos."},
+            { texto:"Tu misión:\n Escribe un subtítulo para organizar mi laboratorio. \n Ejemplo: \n<h1>Mi cabeza</h1>\n <h2>Mi cuello</h2>\n<h2>Mi pecho</h2>"}
         ],
         video: "videos/mision2-h2.mp4",
         recompensa: "¡Dos títulos en tu página! ¡WOOOOW!",
@@ -101,10 +125,14 @@ const misiones = [
         }
     },
     {
-        titulo: "Cuenta de qué trata tu película favorita",
+        titulo: "MISIÓN 3: Recuperemos mi voz",
         pasos: [
-            { texto: "¿Qué es?\n Es texto normal, como cuando escribes una historia o cuentas algo. No tiene negrita ni tamaño grande. \n¿Cómo se usa? {{VIDEO}}" },
-            { texto: "Ejercicio:\n Escribe un <p> contando de qué trata tu película favorita" }
+            { texto: "¡Cada vez estoy más completo!" },
+            { texto: "Pero todavía no puedo contar mi historia." },
+            { texto: "¿Sabes por qué?" },
+            { texto: "Porque todavía no tengo texto." },
+            { texto: "Las páginas web usan la etiqueta <p> para escribir párrafos. Es como mi voz. Gracias a ella puedo hablar contigo." },
+            { texto: "Tu misión: \n Escribe un mensaje para que pueda presentarme. \nEjemplo: \n<p>Hola, soy Codi y este es mi laboratorio.</p>" },
         ],
         video: "videos/mision3-p.mp4",
         recompensa: "¡Tu página tiene contenido!",
@@ -115,18 +143,12 @@ const misiones = [
         }
     },
     {
-        titulo: "Inserta una imagen",
+        titulo: "Misión 4: Recuperemos mis ojos",
         pasos: [
-            { texto: "¿Qué es <img>? \n Es la etiqueta que muestra una imagen en la pantalla. No se cierra con pareja como las demás. \n ¿Cómo se usa? <img src= >{{VIDEO}}" },
-            { texto: "Ejercicio:\n Busca una imagen de tu película favorita y pégala aquí:" }
+            { texto: "¡No lo puedo creer! \n ¿Cómo se usa?{{VIDEO}}" },
+            { texto: " Tu misión:\n Agrega mi imagen para devolverme la vista. \n Por ejemplo, una foto mía.\n <img src= > \n La parte src le dice a la computadora dónde encontrar la imagen. Es como darle un mapa para buscarla." }
         ],
-        // BUGFIX: estos dos campos estaban cruzados. `video` (el tutorial que
-        // se inserta con {{VIDEO}} arriba) tenía la URL del GIF de festejo,
-        // y `videoLogro` (la pantalla de recompensa) tenía el mp4 local.
-        // Se regresaron al mismo patrón usado en las misiones 1-3:
-        // `video` = clip local del tutorial, `videoLogro` = gif de festejo.
-        // ⚠️ Verifica que "videos/mision4-img.mp4" sea el nombre real de tu archivo.
-        video: "videos/mision4-img.mp4",
+        video: "videos/mision4-img.mp4", 
         recompensa: "¡Tu página tiene imagen! A partir de ahora puedes decorarla libremente con CSS 🎨",
         videoLogro: "videos/logro1.mp4",
         autoValidar: false,
@@ -190,27 +212,209 @@ function extraerLineaVideo(texto) {
 
 // El rectángulo #video-mission tiene dos usos según el paso:
 //  - paso explicativo (trae {{VIDEO}}): muestra el título/caption + el
-//    <video> del tutorial
+//    <video> del tutorial, juntos, dentro de #video-mission
 //  - paso de pregunta/ejercicio (sin {{VIDEO}}): muestra el texto de la
-//    pregunta ahí adentro, en vez de en el bloque normal de texto
+//    pregunta ahí adentro, con la misma clase .video-mission-titulo
+// #video-mission solo se usa en el paso explicativo (el que trae {{VIDEO}}):
+// muestra el título/caption + el <video> del tutorial, juntos. El ejercicio
+// (paso sin {{VIDEO}}) no lo toca, se muestra en textMision.
 function mostrarVideoMision(videoSrc, tituloVideo = "") {
-    const caption = tituloVideo
-        ? `<p class="video-mission-titulo">${escaparHTML(tituloVideo)}</p>`
-        : "";
 
-    videoMision.innerHTML =
-        caption +
-        `<video class="mission-video" src="${videoSrc}" controls playsinline></video>`;
-
-    videoMision.classList.remove("hidden", "video-mission-texto");
-    videoMision.classList.add("show");
-}
-
-function mostrarPreguntaEnVideoMision(texto) {
-    videoMision.innerHTML = renderInstrucciones(texto);
     videoMision.classList.remove("hidden");
-    videoMision.classList.add("show", "video-mission-texto");
+
+    videoMision.innerHTML = `
+        ${tituloVideo
+            ? `<p class="video-mission-titulo">${escaparHTML(tituloVideo)}</p>`
+            : ""
+        }
+
+        <video class="mission-video"
+            src="${videoSrc}"
+            controls
+            playsinline>
+        </video>
+    `;
 }
+function mostrarPreguntaEnVideoMision(texto) {
+
+    // La pregunta/ejercicio se muestra DENTRO de #video-mission (mismo
+    // contenedor que el video), usando la misma clase .video-mission-titulo
+    // que el título del video, para que ambos casos luzcan consistentes.
+    textMision.classList.add("hidden");
+
+    videoMision.classList.remove("hidden");
+
+    const textoConSaltos = escaparHTML(texto).replace(/\n/g, "<br>");
+
+    videoMision.innerHTML = `<p class="video-mission-titulo">${textoConSaltos}</p>`;
+}
+
+// =====================
+// ANIMACIÓN DE LA MASCOTA (video por diálogo)
+// =====================
+// Video que se usa cuando una línea no trae animación propia, o cuando el
+// archivo de esa línea todavía no existe (ver fallback en el 'error' de abajo).
+const VIDEO_MASCOTA_IDLE = "videos/mascota-idle.mp4";
+
+function reproducirAnimacionMascota(src) {
+    if (!robotAvatar) return;
+
+    const fuente = src || VIDEO_MASCOTA_IDLE;
+
+    // Si ya es el video que está sonando, solo lo reinicia en vez de recargarlo
+    if (robotAvatar.getAttribute("src") === fuente) {
+        robotAvatar.currentTime = 0;
+        robotAvatar.play().catch(() => {});
+        return;
+    }
+
+    robotAvatar.src = fuente;
+    robotAvatar.load();
+    robotAvatar.play().catch(() => {
+        // Autoplay bloqueado por el navegador (pasa si no está muted): no es grave, se ignora.
+    });
+}
+
+// Si el video de una línea puntual no existe (404), no tronamos: caemos
+// en silencio al idle. Así puedes dejar `video` en un diálogo sin crear
+// el archivo todavía, sin que se rompa nada.
+if (robotAvatar) {
+    robotAvatar.addEventListener("error", () => {
+        if (robotAvatar.getAttribute("src") !== VIDEO_MASCOTA_IDLE) {
+            console.warn(`No se encontró "${robotAvatar.getAttribute("src")}", usando idle.`);
+            robotAvatar.src = VIDEO_MASCOTA_IDLE;
+            robotAvatar.load();
+            robotAvatar.play().catch(() => {});
+        }
+    });
+}
+
+// =====================
+// TOUR DEL LABORATORIO
+// =====================
+// Aparece una sola vez, justo después del loading y antes de la primera
+// misión. Codi va hablando desde abajo-izquierda mientras resalta (con la
+// clase .tour-highlight) los elementos reales de la pantalla del editor:
+// el tablero de misiones, el marcador de piezas, el editor y la preview.
+//
+// `resaltar` acepta un selector CSS o un arreglo de selectores (por si hay
+// que señalar dos cosas a la vez, como el botón de ayuda y el de recordar
+// misión). `video` es opcional, igual que en los otros diálogos: si no se
+// pone, se usa el idle.
+const dialogosLaboratorio = [
+    { texto: "¡Bienvenido a mi laboratorio! Déjame enseñarte cómo funciona." },
+    { texto: "Este tablero mostrará nuestras misiones.", resaltar: ".mission-header-title" },
+    { texto: "Aquí irán apareciendo las piezas que recuperemos.", resaltar: ".mission-header-xp" },
+    { texto: "Aquí escribiremos nuestro código.", resaltar: "#box-editor-html" },
+    { texto: "Y aquí veremos si funcionó.", resaltar: "#preview-page" },
+    {
+        texto: "Esto es para que te ayude si no encuentras las teclas y aquí estaré yo para recordarte las instrucciones de cada reto.",
+        resaltar: ["#box-help-symbols", "#recordar-mision-btn"]
+    },
+    { texto: "¿Estás listo?", final: true }
+];
+
+let dialogoLaboratorioActual = 0;
+let elementosResaltadosActuales = [];
+
+function limpiarResaltadoTour() {
+    elementosResaltadosActuales.forEach(el => el.classList.remove("tour-highlight"));
+    elementosResaltadosActuales = [];
+}
+
+function aplicarResaltadoTour(resaltar) {
+    limpiarResaltadoTour();
+    if (!resaltar) return;
+
+    const selectores = Array.isArray(resaltar) ? resaltar : [resaltar];
+    selectores.forEach(selector => {
+        const el = document.querySelector(selector);
+        // Si el selector no existe en el HTML todavía, no truena: simplemente
+        // no resalta nada esa línea (útil mientras vas ajustando el layout).
+        if (el) {
+            el.classList.add("tour-highlight");
+            elementosResaltadosActuales.push(el);
+        }
+    });
+}
+
+// Video del robot dedicado al tour: independiente del #robot-avatar de la
+// intro/bienvenida, porque ese vive en welcome-card, que ya está oculto
+// para cuando arranca este tour.
+function reproducirAnimacionMascotaTour(src) {
+    if (!startScreenRobot) return;
+    const fuente = src || VIDEO_MASCOTA_IDLE;
+
+    if (startScreenRobot.getAttribute("src") === fuente) {
+        startScreenRobot.currentTime = 0;
+        startScreenRobot.play().catch(() => {});
+        return;
+    }
+
+    startScreenRobot.src = fuente;
+    startScreenRobot.load();
+    startScreenRobot.play().catch(() => {});
+}
+
+if (startScreenRobot) {
+    startScreenRobot.addEventListener("error", () => {
+        if (startScreenRobot.getAttribute("src") !== VIDEO_MASCOTA_IDLE) {
+            startScreenRobot.src = VIDEO_MASCOTA_IDLE;
+            startScreenRobot.load();
+            startScreenRobot.play().catch(() => {});
+        }
+    });
+}
+
+function iniciarTourLaboratorio() {
+    // Si el HTML del tour no existe todavía, no bloqueamos el juego:
+    // pasamos directo a la primera misión como antes.
+    if (!startScreen || !startScreenSpeech) {
+        mostrarInstruccionesMision();
+        return;
+    }
+
+    dialogoLaboratorioActual = 0;
+    startScreen.classList.remove("hidden");
+    if (startScreenBtn) startScreenBtn.classList.add("hidden");
+
+    mostrarDialogoLaboratorio();
+}
+
+function mostrarDialogoLaboratorio() {
+    const dialogo = dialogosLaboratorio[dialogoLaboratorioActual];
+
+    aplicarResaltadoTour(dialogo.resaltar);
+    reproducirAnimacionMascotaTour(dialogo.video);
+
+    if (startScreenBtn) startScreenBtn.classList.add("hidden");
+
+    escribirTexto(dialogo.texto, startScreenSpeech, () => {
+        if (dialogo.final) {
+            if (startScreenBtn) startScreenBtn.classList.remove("hidden");
+        } else {
+            setTimeout(() => siguienteDialogoLaboratorio(), 1600);
+        }
+    }, 45); // un poco más lento que la intro para que dé tiempo a ver lo resaltado
+}
+
+function siguienteDialogoLaboratorio() {
+    dialogoLaboratorioActual++;
+    if (dialogoLaboratorioActual < dialogosLaboratorio.length) {
+        mostrarDialogoLaboratorio();
+    }
+}
+
+function finalizarTourLaboratorio() {
+    limpiarResaltadoTour();
+    startScreen.classList.add("hidden");
+    mostrarInstruccionesMision();
+}
+
+if (startScreenBtn) {
+    startScreenBtn.addEventListener("click", finalizarTourLaboratorio);
+}
+
 // =====================
 // ESTADO DEL JUGADOR
 // =====================
@@ -229,27 +433,34 @@ let esperandoSiguienteMision = false; // true mientras se muestra el mensaje de 
 // GUARDAR Y CARGAR
 // =====================
 function guardarProgreso() {
-    localStorage.setItem("jugador", JSON.stringify(jugador));
+    try {
+        localStorage.setItem("jugador", JSON.stringify(jugador));
+    } catch (error) {
+        console.warn("No se pudo guardar el progreso:", error);
+    }
 }
 
 function cargarProgreso() {
     const datos = localStorage.getItem("jugador");
+    if (!datos) return false;
 
-    if (datos) {
+    try {
         const jugadorGuardado = JSON.parse(datos);
-        jugador.nombre = jugadorGuardado.nombre;
-        jugador.xp     = jugadorGuardado.xp;
-        jugador.nivel  = jugadorGuardado.nivel;
+        jugador.nombre = jugadorGuardado.nombre || "programador";
+        jugador.xp     = Number.isFinite(jugadorGuardado.xp) ? jugadorGuardado.xp : 0;
+        jugador.nivel  = jugadorGuardado.nivel || 1;
         return true;
+    } catch (error) {
+        console.warn("Progreso guardado corrupto, se reinicia:", error);
+        localStorage.removeItem("jugador");
+        return false;
     }
-
-    return false;
 }
 
 // =====================
 // UTILIDADES
 // =====================
-function escribirTexto(texto, elemento, callback) {
+function escribirTexto(texto, elemento, callback, velocidad = 50) {
     let i = 0;
     elemento.textContent = "";
 
@@ -261,7 +472,7 @@ function escribirTexto(texto, elemento, callback) {
             clearInterval(intervaloTexto);
             if (callback) callback();
         }
-    }, 50);
+    }, velocidad);
 }
 
 function cambiarPantalla(pantallaVieja, pantallaNueva) {
@@ -285,9 +496,11 @@ function escaparHTML(texto) {
 function mostrarDialogo() {
     const dialogo = dialogosIntroduccion[dialogoActual];
 
+    reproducirAnimacionMascota(dialogo.video); // usa el video de la línea, o el idle si no trae uno
+
     if (dialogo.texto) {
         escribirTexto(dialogo.texto, speech, () => {
-            setTimeout(() => siguienteDialogo(), 1500);
+            setTimeout(() => siguienteDialogo(), 1200);
         });
         return;
     }
@@ -321,12 +534,33 @@ function ocultarFormulario() {
     startBtn.classList.remove("show");
     startBtn.classList.add("hidden");
 }
-
 function saludarJugador() {
     escribirTexto(`¡Mucho gusto, ${jugador.nombre}! 😄`, speech, () => {
         guardarProgreso();
-        mostrarLoading();
+        dialogoBienvenidaActual = 0; // reinicia el diálogo de bienvenida cada vez que se llama
+        mostrarDialogoBienvenida();
     });
+}
+function mostrarDialogoBienvenida() {
+    const dialogo = dialogosBienvenida[dialogoBienvenidaActual];
+    const texto = dialogo.texto.replace("{nombre}", jugador.nombre);
+
+    reproducirAnimacionMascota(dialogo.video); // usa el video de la línea, o el idle si no trae uno
+
+    // Velocidad más lenta (90ms/letra) que la intro (50ms/letra) para que
+    // se alcance a leer bien este bloque, que tiene frases más largas.
+    escribirTexto(texto, speech, () => {
+        setTimeout(() => siguienteDialogoBienvenida(), 1500);
+    }, 90);
+}
+
+function siguienteDialogoBienvenida() {
+    dialogoBienvenidaActual++;
+    if (dialogoBienvenidaActual < dialogosBienvenida.length) {
+        mostrarDialogoBienvenida();
+    } else {
+        mostrarLoading(); 
+    }
 }
 
 function comenzarJuego() {
@@ -474,7 +708,10 @@ function finalizarCarga() {
     // El editor ya estaba armado y visible detrás: ahora se habilita.
     editorScreen.classList.remove("revealing");
 
-    mostrarInstruccionesMision(); // muestra el overlay con la primera misión
+    // FIX/FEATURE: antes iba directo a la primera misión. Ahora primero pasa
+    // por el tour del laboratorio (Codi señalando el tablero, editor, etc.);
+    // ese tour es quien llama a mostrarInstruccionesMision() al terminar.
+    iniciarTourLaboratorio();
 }
 
 // =====================
@@ -646,9 +883,15 @@ function obtenerParrafoInstrucciones() {
     // FIX: el párrafo ahora se inserta dentro de #text-mision (junto al
     // robot), en línea con la estructura del HTML dividido, en vez de
     // como hijo suelto de #mission-instructions.
+    //
+    // FIX BUG: este contenedor se rellena vía innerHTML con otros <p> y
+    // <div> adentro (renderPasosIndicador, renderInstrucciones). Un <p> NO
+    // puede contener <p>/<div> como hijos: el navegador cierra el <p> solo
+    // en cuanto encuentra el primer hijo de bloque, y el resto del HTML
+    // termina como hermano suelto en vez de hijo real. Por eso se usa <div>.
     let parrafo = textMision.querySelector(".mission-instructions-text");
     if (!parrafo) {
-        parrafo = document.createElement("p");
+        parrafo = document.createElement("div");
         parrafo.className = "mission-instructions-text";
         textMision.appendChild(parrafo);
     }
@@ -686,9 +929,9 @@ function renderPasoInstrucciones(mensaje = "") {
     const tieneVideo = !!(paso.texto && paso.texto.includes("{{VIDEO}}") && mision.video);
 
     if (tieneVideo) {
-        // Paso explicativo: separamos la línea del video (ej. "¿Cómo se
-        // usa?") del resto del texto. El resto va en el bloque normal
-        // (junto al robot); esa línea se muestra como título del video.
+        // Mostrar el panel superior
+        textMision.classList.remove("hidden");
+
         const { texto: textoSinLineaVideo, tituloVideo } = extraerLineaVideo(paso.texto);
 
         parrafo.innerHTML =
@@ -698,21 +941,23 @@ function renderPasoInstrucciones(mensaje = "") {
 
         mostrarVideoMision(mision.video, tituloVideo);
     } else {
-        // Paso de pregunta/ejercicio: el texto se mueve DENTRO del
-        // rectángulo de video. El bloque normal solo conserva el indicador
-        // de pasos (y el aviso de "casi" si lo hay).
+        // Ejercicio (paso sin {{VIDEO}}): va en la ventana normal de
+        // instrucciones (textMision), NO en el contenedor del video.
+        textMision.classList.remove("hidden");
+
         parrafo.innerHTML =
             (mensaje ? `<p class="mission-warning">${mensaje}</p>` : "") +
-            renderPasosIndicador(pasos.length, pasoActual);
+            renderPasosIndicador(pasos.length, pasoActual) +
+            renderInstrucciones(paso.texto || "");
 
-        mostrarPreguntaEnVideoMision(paso.texto || "");
+        videoMision.classList.add("hidden");
+        videoMision.innerHTML = "";
     }
 
     missionContinueBtn.innerHTML = esUltimoPaso
-  ? '<img src="css/img/continuar.svg" alt="check" class="btn-icon">'
-  : ' <img src="css/img/continuar.svg" alt="siguiente" class="btn-icon">';
+        ? '<img src="css/img/continuar.svg" alt="check" class="btn-icon">'
+        : '<img src="css/img/continuar.svg" alt="siguiente" class="btn-icon">';
 }
-
 function mostrarInstruccionesMision(mensaje = "") {
     if (enModoLibre()) return;
 
@@ -778,9 +1023,12 @@ function verificarMision(codigo) {
     }
 }
 function obtenerParrafoLogro() {
+    // FIX BUG: mismo problema que obtenerParrafoInstrucciones() — este
+    // contenedor recibe innerHTML con <img>/<video> y <p> adentro, así que
+    // debe ser <div> y no <p> para que el navegador no lo cierre solo.
     let parrafo = logroTexto.querySelector(".mission-texto-mensaje");
     if (!parrafo) {
-        parrafo = document.createElement("p");
+        parrafo = document.createElement("div");
         parrafo.className = "mission-texto-mensaje";
         logroTexto.prepend(parrafo);
     }
@@ -817,9 +1065,17 @@ function avanzarSiguienteMision() {
 
 // FIX: `logroCerrarBtn` tampoco existía — se declaró como
 // `overlayLogroCerrarBtn` arriba. Este era el segundo ReferenceError.
-overlayLogroCerrarBtn.addEventListener("click", avanzarSiguienteMision);
-if (!overlayLogroCerrarBtn.textContent.trim()) {
-    overlayLogroCerrarBtn.innerHTML = "<span>✕</span>";
+//
+// FIX BUG: se agrega el mismo guard `if (overlayLogroCerrarBtn)` que ya
+// tiene overlayMisionCerrarBtn más arriba. Antes, si el botón ✕ no existía
+// en el HTML de .overlay-logro, esto lanzaba un TypeError que cortaba la
+// ejecución de todo lo que viene después (incluido el listener de
+// descargarBtn, el de finalBtn, etc).
+if (overlayLogroCerrarBtn) {
+    overlayLogroCerrarBtn.addEventListener("click", avanzarSiguienteMision);
+    if (!overlayLogroCerrarBtn.textContent.trim()) {
+        overlayLogroCerrarBtn.innerHTML = "<span>✕</span>";
+    }
 }
 
 // El botón "Continuar" dentro de .mission-texto (si lo agregaste) hace lo mismo que la ✕

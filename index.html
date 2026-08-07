@@ -30,6 +30,7 @@
     <div class="welcome-mascot-wrap">
         <div class="welcome-mascot">
             <img class="mascota-robot" src="css/img/robot.png" alt="robot mascota">
+            <div class="robot-avatar"></div>
         </div>
 
 
@@ -62,7 +63,7 @@
         class="welcome-btn hidden"
         id="start-btn"
         onclick="comenzarJuego()">
-        <img class="arrow-continue" src="css/img/flecha.svg" alt="flecha-continuar">
+        <img class="arrow-continue" src="css/img/continuar.svg" alt="flecha-continuar">
 
     </button>
 
@@ -80,14 +81,6 @@
          revelando el editor que ya está armado detrás. -->
     <div class="pixel-reveal" id="pixel-reveal"></div>
 
-    <div class="stars">
-        <span class="star s1"></span>
-        <span class="star s2"></span>
-        <span class="star s3"></span>
-        <span class="star s4"></span>
-        <span class="star s5"></span>
-        <span class="star s6"></span>
-    </div>
 
     <div class="loading-content">
     <h1 class="loading-title">CREANDO TU LABORATORIO</h1>
@@ -97,7 +90,22 @@
     <div class="loading-message" id="loading-message">&gt; Preparando todo...</div>
 </div>
 </div>
-
+<!-- =====================================
+     PANTALLA DE BIENVENIDA AL EDITOR
+===================================== -->
+<div class="start-screen hidden" id="start-screen">
+    <div class="start-screen-guide">
+        <video id="start-screen-robot" class="start-screen-robot" autoplay muted loop playsinline></video>
+        <div class="start-screen-bubble">
+            <p id="start-screen-speech"></p>
+            <button id="start-screen-btn" class="start-screen-btn hidden">Manos a la obra</button>
+        </div>
+        <button class="button-continue">
+            <img src="css/img/continuar.svg" alt="" id="arrow-continue">
+        </button>
+        
+    </div>
+</div>
 <!-- =====================================
      EDITOR
 ===================================== -->
@@ -122,9 +130,6 @@
             <button id="ya-termine-btn" class="hidden">Ya terminé ✓</button>
         </div>
 
-        <!-- Panel de CSS: solo aparece en modo libre, una vez completadas
-             las 4 misiones de HTML. La tabla de ayuda vive fija dentro de
-             este panel, debajo del editor, siempre visible. -->
         <section class="box-editor-css" id="box-editor-css">
             <div class="box-intern-css">
                 <div class="editor-css">
@@ -226,7 +231,7 @@
         </div>
 
         <button id="descargar-btn" class="hidden">
-            💾 Descargar mi página
+            Crear a mi robot
         </button>
                 <button id="recordar-mision-btn">
             ?
@@ -254,7 +259,7 @@
                 </div>
             </div>
 
-            <div class="video-mission " id="video-mission">
+            <div id="video-mission">
             
             </div>
 
@@ -296,10 +301,17 @@
     </div>
 
     <div class="final-content">
-        <div class="final-trofeo">🏆</div>
-        <h1 class="final-titulo" id="final-titulo">¡Felicidades!</h1>
-        <p class="final-mensaje" id="final-mensaje">Has terminado el curso 🎉</p>
-        <button class="final-btn" id="final-btn">¡Genial! 😄</button>
+
+            <div class="estrellas">
+                <img src="css/img/estrella.svg" class="final-mensaje" id="final-mensaje">
+                <img src="css/img/estrella.svg" class="final-mensaje" id="final-mensaje">
+                <img src="css/img/estrella.svg" class="final-mensaje" id="final-mensaje">
+            </div>
+            
+            <img  src="css/img/banderin.svg" class="final-titulo" id="final-titulo">
+            <img src="css/img/final.svg" class="robot-final" alt="">
+
+        <button class="final-btn" id="final-btn">¡Genial!</button>
     </div>
 </div>
 
