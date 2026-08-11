@@ -92,9 +92,14 @@ const misiones = [
         pasos: [
             { texto: "¡Empecemos por la parte más importante de mi cuerpo: la cabeza!" },
             { texto: "¿Recuerdas que HTML es mi esqueleto? Pues mi cabeza necesita un   título, porque todos deben saber quién soy" },
-            { texto: "En las páginas web, los títulos más importantes se escriben con la etiqueta <h1>." },
+            { texto: "En las páginas web, los títulos más importantes se escriben con la etiqueta \`<h1>`." },
             { texto: "Es como un letrero gigante que dice de qué trata la página." },
-            { texto: "Tu misión:\n Escribe un título para ayudarme a recuperar mi cabeza.\n Por ejemplo: \n <h1>Hola, soy Codi</h1>\nEse sería un buen título." }
+            {texto: `{{MISION}}Tu misión:
+            Escribe un título para ayudarme a recuperar mi cabeza.
+            {{EJEMPLO}}Por ejemplo:
+            \`<h1>\`Hola, soy Codi\`</h1>\`
+            Ese sería un buen título.`
+            }
         ],
         video: "videos/mision1-h1.mp4",
         videoLogro: "https://i.pinimg.com/originals/aa/d3/0b/aad30b629170b9b9195542820179cc70.gif",
@@ -109,13 +114,18 @@ const misiones = [
         pasos: [
             { texto:"¡Ya tengo cabeza! Pero todavía necesito mi pecho."},
             { texto:"Un título grande está muy bien, pero a veces necesitamos organizar la información."},
-            { texto:"Para eso existe <h2>, piensa que un <h1> es el título de un libro y un <h2> son los nombres de sus capítulos."},
-            { texto:"Tu misión:\n Escribe un subtítulo para organizar mi laboratorio. \n Ejemplo: \n<h1>Mi cabeza</h1>\n <h2>Mi cuello</h2>\n<h2>Mi pecho</h2>"}
+            { texto:"Para eso existe \`<h2>\`, piensa que un \`<h1>\` es el título de un libro y un \`<h2>\` son los nombres de sus capítulos."},
+            {texto: `{{MISION}}Tu misión:
+                 Escribe un subtítulo para organizar mi laboratorio.
+                {{EJEMPLO}}Por ejemplo:
+                \`<h1>\`Mi cabeza\`</h1>\`\n \`<h2>\`Mi cuello\`</h2>\`\n \`<h2>\`Mi pecho\`</h2>\`  `
+            }
+                
         ],
         video: "videos/mision2-h2.mp4",
         recompensa: "¡Dos títulos en tu página! ¡WOOOOW!",
         videoLogro: "https://i.pinimg.com/originals/4d/32/f1/4d32f142871c29466f303c2c80f24ed4.gif",
-        autoValidar: false, // texto libre, el niño decide cuándo terminó
+        autoValidar: false, 
         validar(codigo) {
             return /<h2>[^<]{2,}<\/h2>/i.test(codigo);
         }
@@ -128,8 +138,12 @@ const misiones = [
             { texto: "Pero todavía no puedo contar mi historia." },
             { texto: "¿Sabes por qué?" },
             { texto: "Porque todavía no tengo texto." },
-            { texto: "Las páginas web usan la etiqueta <p> para escribir párrafos. Es como mi voz. Gracias a ella puedo hablar contigo." },
-            { texto: "Tu misión: \n Escribe un mensaje para que pueda presentarme. \nEjemplo: \n<p>Hola, soy Codi y este es mi laboratorio.</p>" },
+            { texto: "Las páginas web usan la etiqueta \`</p>\`  para escribir párrafos. Es como mi voz. Gracias a ella puedo hablar contigo." },
+            {texto: `{{MISION}}Tu misión:
+                 Escribe un mensaje para que pueda presentarme.
+                {{EJEMPLO}}Por ejemplo:
+                \`<p>\`Hola, soy Codi y este es mi laboratorio.\`</p>\`  `
+            }
         ],
         video: "videos/mision3-p.mp4",
         recompensa: "¡Tu página tiene contenido!",
@@ -142,8 +156,12 @@ const misiones = [
     {
         titulo: "Misión 4: Recuperemos mis ojos",
         pasos: [
-            { texto: "¡No lo puedo creer! \n ¿Cómo se usa?{{VIDEO}}" },
-            { texto: " Tu misión:\n Agrega mi imagen para devolverme la vista. \n Por ejemplo, una foto mía.\n <img src= > \n La parte src le dice a la computadora dónde encontrar la imagen. Es como darle un mapa para buscarla." }
+            { texto: "¡No lo puedo creer, ya casi acabamos! \n ¿Cómo se usa?{{VIDEO}}" },
+            {texto: `{{MISION}}Tu misión:
+                 Agrega mi imagen para devolverme la vista. 
+                {{EJEMPLO}}Por ejemplo:
+                \`<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhddvzkL8QugCtRugGj6Gs3tETMcxuHqN15q0QL3KvuckNILeDCBBxDtA&s=10">\`  `
+            }
         ],
         video: "videos/mision4-img.mp4", 
         recompensa: "¡Tu página tiene imagen! A partir de ahora puedes decorarla libremente con CSS",
@@ -155,42 +173,71 @@ const misiones = [
     }
 ];
 
-
 function renderInstrucciones(texto) {
     const escapar = (str) =>
         str
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;");
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
 
-    // Dividir el texto en líneas, quitando espacios sobrantes y líneas vacías
-    const lineas = texto.split("\n").map(l => l.trim()).filter(l => l !== "");
+    const lineas = texto
+        .split("\n")
+        .map(l => l.trim())
+        .filter(l => l !== "");
 
     const html = lineas
         .map((linea) => {
+
+            // VIDEO
+            if (linea.includes("{{VIDEO}}")) {
+                linea = linea.replace("{{VIDEO}}", "").trim();
+            }
+
+            // MISION
+            if (linea.startsWith("{{MISION}}")) {
+                const contenido = escapar(
+                    linea.replace("{{MISION}}", "").trim()
+                );
+
+                return `<p class="instruccion-mision">${contenido}</p>`;
+            }
+
+            // EJEMPLO
+            if (linea.startsWith("{{EJEMPLO}}")) {
+                const contenido = escapar(
+                    linea.replace("{{EJEMPLO}}", "").trim()
+                );
+
+                return `<p class="instruccion-ejemplo">${contenido}</p>`;
+            }
+
+            // Código entre backticks
             let contenido = escapar(linea);
 
-            // Convertir `texto` entre backticks en <code>
-            contenido = contenido.replace(/`([^`]+)`/g, "<code>$1</code>");
+            contenido = contenido.replace(
+                /`([^`]+)`/g,
+                "<code>$1</code>"
+            );
 
-            // Red de seguridad: si quedara algún {{VIDEO}} suelto (no debería,
-            // ver extraerLineaVideo), lo limpiamos para no dejar un hueco.
-            contenido = contenido.replace("{{VIDEO}}", "").trim();
-
-            // Detectar si la línea es una pregunta para darle otra clase
             const esPregunta = contenido.startsWith("¿");
 
-            return `<p class="${esPregunta ? "instruccion-pregunta" : "instruccion-texto"}">${contenido}</p>`;
+            return `
+                <p class="${
+                    esPregunta
+                        ? "instruccion-pregunta"
+                        : "instruccion-texto"
+                }">
+                    ${contenido}
+                </p>
+            `;
         })
         .join("");
 
     return html;
 }
 
-// Saca del texto la línea que trae el marcador {{VIDEO}} (ej. "¿Cómo se
-// usa?") para usarla como título/caption del video, en vez de dejarla
-// mezclada con el resto de las instrucciones.
-// Devuelve { texto: el resto de las líneas, tituloVideo: esa línea, limpia }
 function extraerLineaVideo(texto) {
     const lineas = (texto || "").split("\n");
     let tituloVideo = "";
@@ -207,14 +254,7 @@ function extraerLineaVideo(texto) {
     return { texto: lineasResto.join("\n"), tituloVideo };
 }
 
-// El rectángulo #video-mission tiene dos usos según el paso:
-//  - paso explicativo (trae {{VIDEO}}): muestra el título/caption + el
-//    <video> del tutorial, juntos, dentro de #video-mission
-//  - paso de pregunta/ejercicio (sin {{VIDEO}}): muestra el texto de la
-//    pregunta ahí adentro, con la misma clase .video-mission-titulo
-// #video-mission solo se usa en el paso explicativo (el que trae {{VIDEO}}):
-// muestra el título/caption + el <video> del tutorial, juntos. El ejercicio
-// (paso sin {{VIDEO}}) no lo toca, se muestra en textMision.
+
 function mostrarVideoMision(videoSrc, tituloVideo = "") {
 
     videoMision.classList.remove("hidden");
@@ -234,23 +274,16 @@ function mostrarVideoMision(videoSrc, tituloVideo = "") {
 }
 function mostrarPreguntaEnVideoMision(texto) {
 
-    // La pregunta/ejercicio se muestra DENTRO de #video-mission (mismo
-    // contenedor que el video), usando la misma clase .video-mission-titulo
-    // que el título del video, para que ambos casos luzcan consistentes.
     textMision.classList.add("hidden");
-
     videoMision.classList.remove("hidden");
-
     const textoConSaltos = escaparHTML(texto).replace(/\n/g, "<br>");
-
     videoMision.innerHTML = `<p class="video-mission-titulo">${textoConSaltos}</p>`;
 }
 
 // =====================
 // ANIMACIÓN DE LA MASCOTA (video por diálogo)
 // =====================
-// Video que se usa cuando una línea no trae animación propia, o cuando el
-// archivo de esa línea todavía no existe (ver fallback en el 'error' de abajo).
+
 const VIDEO_MASCOTA_IDLE = "videos/mascota-idle.mp4";
 
 function reproducirAnimacionMascota(src) {
@@ -258,7 +291,6 @@ function reproducirAnimacionMascota(src) {
 
     const fuente = src || VIDEO_MASCOTA_IDLE;
 
-    // Si ya es el video que está sonando, solo lo reinicia en vez de recargarlo
     if (robotAvatar.getAttribute("src") === fuente) {
         robotAvatar.currentTime = 0;
         robotAvatar.play().catch(() => {});
@@ -268,13 +300,8 @@ function reproducirAnimacionMascota(src) {
     robotAvatar.src = fuente;
     robotAvatar.load();
     robotAvatar.play().catch(() => {
-        // Autoplay bloqueado por el navegador (pasa si no está muted): no es grave, se ignora.
     });
 }
-
-// Si el video de una línea puntual no existe (404), no tronamos: caemos
-// en silencio al idle. Así puedes dejar `video` en un diálogo sin crear
-// el archivo todavía, sin que se rompa nada.
 if (robotAvatar) {
     robotAvatar.addEventListener("error", () => {
         if (robotAvatar.getAttribute("src") !== VIDEO_MASCOTA_IDLE) {
@@ -880,7 +907,7 @@ function verificarFin() {
 }
 
 // =====================
-// GRILLA DE PIXELES (revela el editor mientras carga)
+// GRILLA DE PIXELES 
 // =====================
 const PIXEL_COLS = 24;
 const PIXEL_ROWS = 14;
@@ -941,7 +968,7 @@ yaTermineBtn.addEventListener("click", () => {
 });
 
 // =====================
-// MODO LIBRE (después de completar las 4 misiones de HTML)
+// MODO LIBRE
 // =====================
 function enModoLibre() {
     return jugador.xp >= misiones.length;
@@ -974,7 +1001,7 @@ function saltarDirectoAlEditor() {
     localStorage.removeItem("jugador");
 
     jugador.nombre = "Test";
-    jugador.xp =0 ;
+    jugador.xp = 4 ;
 
     welcomeCard.classList.add("hidden");
     loadingScreen.classList.add("hidden");
@@ -1295,7 +1322,6 @@ ocultarOverlay(overlayLogro);
 codeEditor.addEventListener("input", () => {
     const codigo = codeEditor.value;
 
-    // 1. Revisar etiquetas mal cerradas
     const htmlIncorrecto = htmlTieneEtiquetasMalCerradas(codigo);
 
     if (htmlIncorrecto) {
@@ -1303,23 +1329,17 @@ codeEditor.addEventListener("input", () => {
     } else {
         codeEditor.classList.remove("input-error");
     }
-
-    // 2. Actualizar la vista
     actualizarPreview();
 
-    // 3. Si estamos en modo libre, no validar misiones
     if (enModoLibre()) {
         return;
     }
 
-    // 4. Obtener misión actual
     const mision = obtenerMisionActual();
 
     if (!mision) {
         return;
     }
-
-    // 5. Validar mientras escribe
     const misionCorrecta = mision.validar(codigo);
 
 if (misionCorrecta && !htmlIncorrecto) {
@@ -1346,7 +1366,7 @@ function actualizarPreview() {
 }
 
 // =====================
-// BOTON AYUDA (símbolos de HTML, mientras se hacen las misiones)
+// BOTON AYUDA 
 // =====================
 const buttonHelp = document.getElementById("box-help-symbols");
 const panelSymbols = document.getElementById("panel-symbols");
@@ -1379,23 +1399,20 @@ document.querySelectorAll(".css-help-select").forEach((select) => {
         const propiedad = select.dataset.propiedad;
         insertarTextoCSS(`${propiedad}: ${select.value};\n`);
 
-        select.value = ""; // vuelve al placeholder, así puede reusarse
+        select.value = ""; 
     });
 });
 // =====================
-// TABLA DE AYUDA DE CSS (menús desplegables + tamaño de imagen, modo libre)
+// TABLA DE AYUDA DE CSS 
 // =====================
 // ===== Tamaño de imagen: selección por click + slider =====
 const rangoImagen = document.getElementById("menu-img-tamano");
 let imagenSeleccionada = null;
 let contadorImagenes = 0;
 
-// Escapa caracteres especiales de regex (BUG 3)
 function escaparRegex(texto) {
     return texto.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
-
-// Genera un id que no colisiona con uno ya existente en el código (BUG 5)
 function generarIdUnico() {
     let nuevoId;
     do {
@@ -1405,7 +1422,6 @@ function generarIdUnico() {
     return nuevoId;
 }
 
-// Selecciona una imagen al hacer click sobre ella en el preview
 document.getElementById("preview-page").addEventListener("click", (e) => {
     if (e.target.tagName !== "IMG") return;
 
@@ -1418,7 +1434,7 @@ document.getElementById("preview-page").addEventListener("click", (e) => {
 
     if (!imagenSeleccionada.id) {
         const nuevoId = generarIdUnico();
-        // Calcula qué posición ocupa esta imagen entre las que comparten el mismo src (BUG 4)
+    
         const mismasImagenes = Array.from(
             document.querySelectorAll(`#preview-page img[src="${imagenSeleccionada.getAttribute("src")}"]`)
         );
@@ -1426,9 +1442,6 @@ document.getElementById("preview-page").addEventListener("click", (e) => {
 
         asignarIdEnEditorHTML(imagenSeleccionada, nuevoId, indiceEntreIguales);
 
-        // BUG 2: actualizarPreview() dentro de asignarIdEnEditorHTML destruye
-        // el nodo <img> original (y su outline). Hay que volver a
-        // encontrarlo por su nuevo id y reaplicar el resaltado.
         reseleccionarImagen(nuevoId);
     }
 
@@ -1449,10 +1462,10 @@ function asignarIdEnEditorHTML(img, nuevoId, indiceEntreIguales = 0) {
 
     let contador = -1;
     codeEditor.value = codeEditor.value.replace(regexImg, (match, atributos) => {
-        contador++; // ahora cuenta TODAS las coincidencias, tengan o no id ya
+        contador++; 
 
-        if (contador !== indiceEntreIguales) return match; // no es la que buscamos
-        if (atributos.includes("id=")) return match;        // por si acaso, no la pisamos
+        if (contador !== indiceEntreIguales) return match; 
+        if (atributos.includes("id=")) return match;       
 
         return `<img${atributos} id="${nuevoId}">`;
     });
@@ -1460,7 +1473,7 @@ function asignarIdEnEditorHTML(img, nuevoId, indiceEntreIguales = 0) {
     actualizarPreview();
 }
 
-// Crea o reemplaza la regla CSS "#idImagen { width: X%; }"
+
 function actualizarTamanoImagenPorId(id, valor) {
     if (!cssEditorInput) return;
 
@@ -1502,7 +1515,7 @@ function insertarTextoCSS(texto) {
     actualizarPreview();
 }
 // =====================
-// PANTALLA FINAL (felicidades)
+// PANTALLA FINAL 
 // =====================
 function mostrarFelicidades() {
     if (!finalScreen) return;

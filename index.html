@@ -132,8 +132,7 @@
                         class="code-editor"
                         id="code-editor"
                         placeholder="Escribe tu código aquí..."
-                        spellcheck="false">
-                    </textarea>    
+                        spellcheck="false"></textarea>    
                 </div>
                 
                 <button id="ya-termine-btn" class="hidden">Ya terminé ✓</button>
@@ -142,17 +141,17 @@
             <section class="box-editor-css" id="box-editor-css">
                 <div class="box-intern-css">
                     <div class="editor-css">
-                        <span class="title-css">CSS</span>
+                    <span class="title-css">CSS</span>
                         <textarea id="css-editor"
-                        placeholder="Escribe tu código CSS aquí..."
-                        spellcheck="false"></textarea>
+                            placeholder="Escribe tu código CSS aquí..."
+                            spellcheck="false"></textarea>
+                    </div>
+                    <div class="css-help-table" id="css-help-table">
+                        <p class="css-help-title">Ayuda rápida de CSS</p>    
 
-                        <div class="css-help-table" id="css-help-table">
-                            <p class="css-help-title">Ayuda rápida de CSS</p>
-
-                            <div class="css-help-menu">
-                                <label for="menu-color-texto"> Color de texto</label>
-                                <select class="css-help-select" id="menu-color-texto" data-propiedad="color">
+                        <div class="css-help-menu">
+                            <label for="menu-color-texto"> Color de texto</label>
+                            <select class="css-help-select" id="menu-color-texto" data-propiedad="color">
                                     <option value="">Elige un color…</option>
                                     <option value="red">Rojo</option>
                                     <option value="orange">Naranja</option>
@@ -163,12 +162,12 @@
                                     <option value="deeppink">Rosa</option>
                                     <option value="black">Negro</option>
                                     <option value="white">Blanco</option>
-                                </select>
-                            </div>
+                                </select>    
+                        </div>            
 
-                            <div class="css-help-menu">
-                                <label for="menu-color-fondo">Color de fondo</label>
-                                <select class="css-help-select" id="menu-color-fondo" data-propiedad="background-color">
+                        <div class="css-help-menu">
+                            <label for="menu-color-fondo">Color de fondo</label>
+                            <select class="css-help-select" id="menu-color-fondo" data-propiedad="background-color">
                                     <option value="">Elige un color…</option>
                                     <option value="lightblue">Azul claro</option>
                                     <option value="lightgreen">Verde claro</option>
@@ -178,34 +177,33 @@
                                     <option value="peachpuff">Durazno</option>
                                     <option value="white">Blanco</option>
                                     <option value="black">Negro</option>
-                                </select>
-                            </div>
-
-                            <div class="css-help-menu">
-                                <label for="menu-texto">Alinear texto</label>
-                                <select class="css-help-select" id="menu-texto" data-propiedad="text-align">
-                                    <option value="">Elige una opción…</option>
-                                    <option value="left">Izquierda</option>
-                                    <option value="center">Centro</option>
-                                    <option value="right">Derecha</option>
-                                </select>
-                            </div>
-
-                            <div class="css-help-menu">
-                                <label for="menu-tamano">Tamaño de letra</label>
-                                <select class="css-help-select" id="menu-tamano" data-propiedad="font-size">
-                                    <option value="">Elige un tamaño…</option>
-                                    <option value="16px">Pequeño</option>
-                                    <option value="24px">Mediano</option>
-                                    <option value="36px">Grande</option>
-                                    <option value="50px">Muy grande</option>
-                                </select>
-                            </div>
-                            <div class="css-help-menu">
-                                <label for="menu-img-tamano">Tamaño de imagen</label>
-                                <input type="range" id="menu-img-tamano" min="0" max="100" value="50">
-                            </div>
+                            </select>    
                         </div>
+
+                        <div class="css-help-menu">
+                           <label for="menu-texto">Alinear texto</label>
+                            <select class="css-help-select" id="menu-texto" data-propiedad="text-align">
+                                <option value="">Elige una opción…</option>
+                                <option value="left">Izquierda</option>
+                                <option value="center">Centro</option>
+                                <option value="right">Derecha</option>
+                            </select>
+                        </div>
+
+                        <div class="css-help-menu">
+                            <label for="menu-tamano">Tamaño de letra</label>
+                            <select class="css-help-select" id="menu-tamano" data-propiedad="font-size">
+                                <option value="">Elige un tamaño…</option>
+                                <option value="16px">Pequeño</option>
+                                <option value="24px">Mediano</option>
+                                <option value="36px">Grande</option>
+                                <option value="50px">Muy grande</option>    
+                            </select>    
+                        </div>
+                        <div class="css-help-menu">
+                            <label for="menu-img-tamano">Tamaño de imagen</label>
+                            <input type="range" id="menu-img-tamano" min="0" max="100" value="50">
+                        </div>    
                     </div>
                 </div>
             </section>
