@@ -1,7 +1,7 @@
 // =====================
 // MODO DESARROLLO
 // =====================
-const DEV_MODE = false;
+const DEV_MODE = true;
 
 // =====================
 // ELEMENTOS DEL HTML
@@ -662,61 +662,63 @@ function escaparHTML(texto) {
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;");
 }
-function analizarEtiquetas(codigo) {
+function htmlTieneEtiquetasMalCerradas(codigo) {
     const regex = /<\/?([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>/g;
+
     const pila = [];
+
     const etiquetasVoid = new Set([
-        "area","base","br","col","embed","hr","img","input",
-        "link","meta","param","source","track","wbr"
+        "area",
+        "base",
+        "br",
+        "col",
+        "embed",
+        "hr",
+        "img",
+        "input",
+        "link",
+        "meta",
+        "param",
+        "source",
+        "track",
+        "wbr"
     ]);
 
     let match;
+
     while ((match = regex.exec(codigo)) !== null) {
         const etiqueta = match[1].toLowerCase();
-        const completa  = match[0];
+        const etiquetaCompleta = match[0];
 
-        if (etiquetasVoid.has(etiqueta)) continue;
+        // Estas etiquetas no necesitan cierre
+        if (etiquetasVoid.has(etiqueta)) {
+            continue;
+        }
 
-        if (completa.startsWith("</")) {
-            if (pila.length === 0) return { valido: false, tag: etiqueta, tipo: "cierre-sin-apertura" };
+        // Etiqueta de cierre
+        if (etiquetaCompleta.startsWith("</")) {
+
+            // Hay un cierre sin apertura
+            if (pila.length === 0) {
+                return true;
+            }
+
             const ultima = pila.pop();
-            if (ultima !== etiqueta) return { valido: false, tag: ultima, tipo: "no-coincide" };
+
+            // El cierre no corresponde con la última etiqueta abierta
+            if (ultima !== etiqueta) {
+                return true;
+            }
+
         } else {
+
+            // Etiqueta de apertura
             pila.push(etiqueta);
         }
     }
 
-    if (pila.length > 0) {
-        return { valido: false, tag: pila[pila.length - 1], tipo: "sin-cerrar" };
-    }
-
-    return { valido: true };
-}
-
-function htmlTieneEtiquetasMalCerradas(codigo) {
-    return !analizarEtiquetas(codigo).valido;
-}
-
-function actualizarMensajeError(codigo) {
-    const mensajeEl = document.getElementById("error-etiqueta");
-    if (!mensajeEl) return;
-
-    const analisis = analizarEtiquetas(codigo);
-
-    if (analisis.valido) {
-        mensajeEl.classList.add("hidden");
-        mensajeEl.textContent = "";
-        return;
-    }
-
-    const mensajes = {
-        "sin-cerrar":        `⚠️ Parece que a <${analisis.tag}> le falta la etiqueta de cierre.`,
-        "cierre-sin-apertura": `⚠️ Hay un cierre </${analisis.tag}> sin su etiqueta de apertura.`,
-        "no-coincide":       `⚠️ Revisa el orden de cierre de <${analisis.tag}>.`
-    };
-
-    mensajeEl.textContent = mensajes[analisis.tipo] || "⚠️ Hay un error en las etiquetas.";
-    mensajeEl.classList.remove("hidden");
+    // Si quedaron etiquetas abiertas
+    return pila.length > 0;
 }
 // =====================
 // INTRODUCCIÓN
@@ -974,7 +976,7 @@ function saltarDirectoAlEditor() {
     localStorage.removeItem("jugador");
 
     jugador.nombre = "Test";
-    jugador.xp =0 ;
+    jugador.xp = 1;
 
     welcomeCard.classList.add("hidden");
     loadingScreen.classList.add("hidden");
@@ -1342,7 +1344,6 @@ function actualizarPreview() {
         <style>${css}</style>
         ${codeEditor.value}
     `;
-    actualizarMensajeError(codeEditor.value);
 }
 
 // =====================
@@ -1571,4 +1572,4 @@ if (DEV_MODE) {
     saltarDirectoAlEditor();
 } else {
     iniciarJuego();
-}   
+}
